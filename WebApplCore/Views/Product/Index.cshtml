@@ -1,0 +1,101 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using WebApplCore.Models;
+
+@model IEnumerable<Product>;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<head>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>My Products</h2>
+
+@*<body>
+    <div class="container">*@
+<table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>UnitsInStock</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Product p in Model)
+        {
+            <tr>
+                <td>@p.Id</td>
+                <td>@p.Name</td>
+                <td>@p.Description</td>
+                <td>@p.Price</td>
+                <td>@p.UnitsInStock</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*</div>
+    </body>*@
+<div style="width:600px; margin-left:auto; margin-right:auto">
+    <div style="background-color: lightgray">
+        <h2>My Products</h2>
+    </div><br />
+
+    <p>
+        Нажмите кнопку, чтобы получить продукты с помощью вызова Ajax<br />
+        (Click the button to Get Products with an Ajax call)
+    </p>
+
+    <input id="btnAjax" name="btnAjax" type="button" value="Get Products" />
+    <div id="products" style="background-color:lightskyblue"></div>
+</div>
+<script>
+    $('#btnAjax').click(function () {
+        $.ajax({
+            url: '/Product/GetProducts',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html'
+
+        })
+            .success(function (result) {
+                $('#products').html(result);
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            })
+    });
+</script>
+
+@*@section Scripts {
+        <script>
+        $('#btnAjax').click(function () {
+            $.ajax({
+                url: '/Product/GetProducts',
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html'
+
+            })
+            .success(function (result) {
+                $('#products').html(result);
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            })
+        });
+
+    }
+    </script>*@
